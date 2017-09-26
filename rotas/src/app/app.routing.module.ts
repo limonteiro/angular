@@ -1,7 +1,8 @@
+import { PaginaNaoEncontradaComponent } from './pagina-nao-encontrada/pagina-nao-encontrada.component';
 
 import { NgModule } from '@angular/core';
 import { ModuleWithProviders } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule, CanLoad } from '@angular/router';
 
 import { HomeComponent } from './home/home.component';
 //import { CursosComponent } from './cursos/cursos.component';
@@ -14,20 +15,26 @@ import { AuthGuard } from './guards/auth.guard';
 
 const appRoutes: Routes = [
     { path: 'cursos',
+        loadChildren: 'app/cursos/cursos.module#CursosModule',
         canActivate: [AuthGuard],
         canActivateChild: [CursosGuard],
-        loadChildren: 'app/cursos/cursos.module#CursosModule'},
+        canLoad: [AuthGuard]
+    },
     { path: 'alunos',
+        loadChildren: 'app/alunos/alunos.module#AlunosModule',
         canActivate: [AuthGuard],
         //canActivateChild: [AlunosGuard],
-        loadChildren: 'app/alunos/alunos.module#AlunosModule'},
+        canLoad: [AuthGuard]
+    },
     //{ path: 'cursos', component: CursosComponent },
     //{ path: 'curso/:id', component: CursoDetalheComponent },
     { path: 'login', component: LoginComponent },
     //{ path: 'naoEncontrado', component: CursoNaoEncontradoComponent},
-    { path: '', 
+    { path: 'home', 
         canActivate: [AuthGuard],
-        component: HomeComponent }
+        component: HomeComponent },
+    { path: '', redirectTo: '/home', pathMatch: 'full' },
+    { path: '**', component: PaginaNaoEncontradaComponent }
 ];
 
 //Decorator
